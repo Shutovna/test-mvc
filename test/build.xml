@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<project name="test" default="dist">
+
+    <property file="src/config.properties"/>
+
+    <path id="compile.classpath">
+        <fileset dir="lib"/>
+    </path>
+
+    <target name="createDB">
+        <sql
+                driver="com.mysql.jdbc.Driver"
+                url="jdbc:mysql://${db.host}/"
+                userid="${db.user}"
+                password="${db.password}"
+                classpathref="compile.classpath"
+                >
+            <fileset file="etc/db.sql"/>
+        </sql>
+    </target>
+
+    <target name="clean">
+        <delete dir="build"/>
+        <delete dir="dist"/>
+    </target>
+
+    <target name="init">
+        <mkdir dir="build/WEB-INF/classes"/>
+        <copy todir="build">
+            <fileset dir="web"/>
+        </copy>
+        <copy todir="build/WEB-INF/classes">
+            <fileset dir="src">
+                <include name="*.properties"/>
+            </fileset>
+        </copy>
+        <copy todir="build/WEB-INF/lib">
+            <fileset dir="lib">
+                <exclude name="servlet-api.jar"/>
+            </fileset>
+        </copy>
+        <copy todir="build/WEB-INF/lib">
+            <fileset dir="web/WEB-INF/jsp"/>
+        </copy>
+        <mkdir dir="dist"/>
+    </target>
+
+    <target name="build" depends="init">
+        <javac
+                srcdir="src"
+                destdir="build/WEB-INF/classes"
+                debug="true"
+                optimize="false"
+                >
+            <classpath refid="compile.classpath"/>
+        </javac>
+    </target>
+
+    <target name="dist" depends="build">
+        <jar jarfile="dist/test.war" basedir="build"/>
+    </target>
+
+</project>
