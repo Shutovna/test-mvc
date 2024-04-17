@@ -1,3 +1,5 @@
+Simple MVC realization.
+
 Requirements:
 1. JDK 1.6
 2. apache-ant-1.7.1
