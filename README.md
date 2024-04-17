@@ -1,4 +1,4 @@
-Simple MVC realization.
+Simple MVC realization writen in 2009
 
 Requirements:
 1. JDK 1.6
